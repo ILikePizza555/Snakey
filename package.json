@@ -1,0 +1,9 @@
+{
+  "name": "snakey",
+  "version": "0.1.0",
+  "description": "An Obeserver-based web microframework for Node.js",
+  "main": "index.js",
+  "repository": "https://github.com/ILikePizza555/Snakey",
+  "author": "Isaac Avram <avrisaac555@gmail.com>",
+  "license": "MIT"
+}
