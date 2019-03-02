@@ -4,6 +4,20 @@ const rxop = require('rxjs/operators');
 const url = require('url');
 
 /**
+ * Extention of the Node.JS URL class.
+ */
+class ParameterizedUrl extends url.URL {
+  /**
+   * Creates a new ParameterizedURL
+   * @param {String} input The absolute or relative URL to parse.
+   * @param {String|url.URL} [base] The base URL to resolve against if the input is not absolute.
+   */
+  constructor(input, base) {
+    super(input, base);
+  }
+}
+
+/**
  * Context object that requests are turned into.
  * This class shouldn't be created by the user.
  * @extends http.IncomingMessage
@@ -20,7 +34,7 @@ class Context extends http.IncomingMessage {
     /** @memberof Context */
     this.rawUrl = req.url;
     /** @memberof Context */
-    this.url = url.parse(req.url);
+    this.url = new ParameterizedUrl(req.url);
 
     this._res = res;
   }
