@@ -25,10 +25,10 @@ class Context extends http.ClientRequest {
  * Creates a new Observable by filtering the method and the url
  * @param {rx.Observable} obs
  * @param {String} verb
- * @param {String} url
+ * @param {String|RegExp} pathPattern
  * @return {rx.Observable}
  */
-function bite(obs, verb, url) {
+function bite(obs, verb, pathPattern) {
   return obs.pipe(
       rxop.filter((v) => v.method === verb),
       rxop.filter((v) => v.url === url)
