@@ -8,5 +8,10 @@
   "license": "MIT",
   "dependencies": {
     "rxjs": "^6.4.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.14.1",
+    "eslint-config-google": "^0.12.0",
+    "eslint-plugin-jsdoc": "^4.1.1"
   }
 }
