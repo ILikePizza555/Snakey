@@ -3,21 +3,26 @@ const rx = require('rxjs');
 const rxop = require('rxjs/operators');
 const url = require('url');
 
-
 /**
  * Context object that requests are turned into.
+ * This class shouldn't be created by the user.
+ * @extends http.IncomingMessage
  */
-class Context extends http.ClientRequest {
+class Context extends http.IncomingMessage {
   /**
    * Creates a new Context object
-   * @param {http.ClientRequest} req
+   * @param {http.IncomingMessage} req
    * @param {http.ServerResponse} res
    */
   constructor(req, res) {
     super(req);
-    this.res = res;
 
-    this.url = url.parse(this.url);
+    /** @memberof Context */
+    this.rawUrl = req.url;
+    /** @memberof Context */
+    this.url = url.parse(req.url);
+
+    this._res = res;
   }
 }
 
