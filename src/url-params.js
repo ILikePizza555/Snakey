@@ -52,7 +52,7 @@ function matchPathPattern(pathname, pattern) {
         .map((v, i) => ({...v, 'group': execResult[i]}))
         .map((v) => v.group ? {...v, 'paramValue': v.group.split(v.delimiter)} : v)
         .reduce((acc, cur) => {
-          if (cur.paramValue && cur.paramValue.length == 1) {
+          if (cur.paramValue && !cur.repeat && cur.paramValue.length == 1) {
             acc[cur.name] = cur.paramValue[0];
           } else {
             acc[cur.name] = cur.paramValue;
