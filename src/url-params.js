@@ -37,16 +37,8 @@ function matchPathPattern(pathname, pattern) {
     path: pathname,
     fullMatch: execResult.shift().replace(/^\/+|\/+$/g, ''),
     params: keys
-        .map((v, i) => Object.assign({}, v, {'group': execResult[i]}))
-        .map((v) => {
-          if (!v.group) {return v;}
-
-          // Create a new object from v with a `paramValue`.
-          return {
-            ...v,
-            'paramValue': v.group.match(new RegExp('[^'+ v.delimiter.replace('/', '\\/') +']+', 'g')),
-          };
-        })
+        .map((v, i) => ({...v, 'group': execResult[i]}))
+        .map((v) => v.group ? {...v, 'paramValue': v.group.split(v.delimiter)} : v)
         .reduce((acc, cur) => {
           acc[cur.name] = cur.paramValue;
           return acc;
