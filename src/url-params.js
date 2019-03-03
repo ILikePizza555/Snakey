@@ -27,25 +27,32 @@ function matchRegex(pathname, regex) {
 function matchPathPattern(pathname, pattern) {
   const keys = [];
   const regex = pathToRegexp(pattern, keys);
-  const result = regex.exec(pathname);
+  const execResult = regex.exec(pathname);
 
-  if (result === null) {
+  if (execResult === null) {
     return null;
   }
-  return keys
-      .map((v, i) => Object.assign({}, v, {'group': result[i + 1]}))
-      .map((v) => {
-        if (!v.group) {return v;}
-        const result = {
-          'result': v.repeat ?
-                    result.result = v.group.match(new RegExp(v.pattern, 'g')) :
-                    result.result = v.group.match(v.pattern)[0]};
-        return Object.assign({}, v, result);
-      })
-      .reduce((acc, cur) => {
-        acc[cur.name] = cur.result;
-        return acc;
-      }, {});
+
+  return {
+    path: pathname,
+    fullMatch: execResult.shift(),
+    params: keys
+        .map((v, i) => Object.assign({}, v, {'group': execResult[i]}))
+        .map((v) => {
+          if (!v.group) {return v;}
+
+          // Create a new object from v with a `paramValue`.
+          // The tertiary operator is used to test for repeating parameters, so `match` returns an array.
+          return Object.assign({}, v, {
+            'paramValue': v.repeat ?
+                    v.group.match(new RegExp(v.pattern, 'g')) :
+                    v.group.match(v.pattern)[0],
+          });
+        })
+        .reduce((acc, cur) => {
+          acc[cur.name] = cur.paramValue;
+          return acc;
+        }, {})};
 }
 
 module.exports = {
