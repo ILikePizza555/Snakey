@@ -1,6 +1,5 @@
 const pathToRegexp = require('path-to-regexp');
 
-
 /**
  * Matches the pathname against the provided RegExp.
  *
@@ -14,8 +13,7 @@ function matchRegex(pathname, regex) {
     throw new TypeError('regex should be a Regex object.');
   }
 
-  this.params = regex.exec();
-  return this.params;
+  return pathname.match(regex);
 }
 
 /**

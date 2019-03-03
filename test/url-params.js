@@ -19,7 +19,7 @@ describe('url-params', function() {
     });
 
     it('matches regex groups', function() {
-      matchRegex('/twilight/sparkle/', /\/(\w*)/).should.be.an.Array().and.match({'length': 2, '1': '/twilight', '2': '/sparkle'});
+      matchRegex('/twilight/sparkle', /\/(\w*)/g).should.be.an.Array().and.match({'length': 2, '0': '/twilight', '1': '/sparkle'});
     });
   });
 
