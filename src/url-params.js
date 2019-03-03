@@ -35,7 +35,7 @@ function matchPathPattern(pathname, pattern) {
 
   return {
     path: pathname,
-    fullMatch: execResult.shift(),
+    fullMatch: execResult.shift().replace(/^\/+|\/+$/g, ''),
     params: keys
         .map((v, i) => Object.assign({}, v, {'group': execResult[i]}))
         .map((v) => {
