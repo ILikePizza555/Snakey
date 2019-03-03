@@ -33,8 +33,8 @@ describe('url-params', function() {
     it('matches a pattern with a regex segment', function() {
       const pattern = '/trans/(girls|boys)?';
       matchPathPattern('/trans/girls', pattern).should.be.an.Object().and.match({'fullMatch': 'trans/girls'});
-      matchPathPattern('/trans/boys', pattern).should.be.an.Object().and.match({'fullMatch': 'trans/girls'});
-      matchPathPattern('/trans/', pattern).should.be.an.Object().and.match({'fullMatch': 'trans/'});
+      matchPathPattern('/trans/boys', pattern).should.be.an.Object().and.match({'fullMatch': 'trans/boys'});
+      matchPathPattern('/trans/', pattern).should.be.an.Object().and.match({'fullMatch': 'trans'});
     });
 
     it('matches a pattern with a named parameter', function() {
