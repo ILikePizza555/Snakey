@@ -17,12 +17,24 @@ function matchRegex(pathname, regex) {
 }
 
 /**
-   * Matches the URL pathname against a string pattern
-   * using path-to-regexp.
+ * The type returned by matchPathPattern.
+ *
+ * The params object normally maps strings to strings. However, in the case of repeatable
+ * parameters, the value will be an array of strings. Optiional parameters may be
+ * `undefined`. Finally, regex groups are assigned numeric names.
+ *
+ * @typedef {Object} PathMatch
+ * @property {string} path - The pathname matched against
+ * @property {string} fullMatch - The full match against the pathname
+ * @property {Object} params - A map of parameter names to the values.
+ */
+
+/**
+   * Matches the URL pathname against a string pattern using path-to-regexp.
    *
    * @param {string} pathname
    * @param {string} pattern
-   * @return {Object?}
+   * @return {PathMatch?}
    */
 function matchPathPattern(pathname, pattern) {
   const keys = [];
