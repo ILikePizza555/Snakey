@@ -15,11 +15,11 @@ describe('url-params', function() {
     });
 
     it('matches simple regex', function() {
-      matchRegex('/stop_it_cadey/', /\/stop_it_cadey/).should.be.an.Array().with.length(1).and.match({'0': '/stop_it_cadey'});
+      matchRegex('/stop_it_cadey/', /\/stop_it_cadey/).should.be.an.Array().and.match({'length': 1, '0': '/stop_it_cadey'});
     });
 
     it('matches regex groups', function() {
-      matchRegex('/twilight/sparkle/', /(\w*)/).should.be.an.Array().with.length(2).and.match({'1': 'twilight', '2': 'sparkle'});
+      matchRegex('/twilight/sparkle/', /\/(\w*)/).should.be.an.Array().and.match({'length': 2, '1': '/twilight', '2': '/sparkle'});
     });
   });
 
