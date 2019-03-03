@@ -120,7 +120,11 @@ function snake(f) {
   return server;
 }
 
-module.exports = Snakey;
+module.exports = {
+  bite: bite,
+  snake: snake,
+  ParameterizedURL: ParameterizedUrl,
+};
 
 /**
  * @callback ObservableMap
