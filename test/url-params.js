@@ -27,20 +27,20 @@ describe('url-params', function() {
 
   describe('matchPathPattern()', function() {
     it('matches a raw string exactly', function() {
-      matchPathPattern('/girls/', '/girls').should.be.an.Object().and.matches({'fullMatch': 'girls'});
+      matchPathPattern('/girls/', '/girls').should.be.an.Object().and.match({'fullMatch': 'girls'});
     });
 
     it('matches a pattern with a regex segment', function() {
       const pattern = '/trans/(girls|boys)?';
-      matchPathPattern('/trans/girls', pattern).should.be.an.Object().and.matches({'fullMatch': 'trans/girls'});
-      matchPathPattern('/trans/boys', pattern).should.be.an.Object().and.matches({'fullMatch': 'trans/girls'});
-      matchPathPattern('/trans/', pattern).should.be.an.Object().and.matches({'fullMatch': 'trans/'});
+      matchPathPattern('/trans/girls', pattern).should.be.an.Object().and.match({'fullMatch': 'trans/girls'});
+      matchPathPattern('/trans/boys', pattern).should.be.an.Object().and.match({'fullMatch': 'trans/girls'});
+      matchPathPattern('/trans/', pattern).should.be.an.Object().and.match({'fullMatch': 'trans/'});
     });
 
     it('matches a pattern with a named parameter', function() {
       const pattern = '/pony/:name';
       matchPathPattern('/pony/spike', pattern).should.be.an.Object()
-          .and.matches({
+          .and.match({
             'fullMatch': 'pony/spike',
             'params': {'name': 'spike'},
           });
@@ -49,7 +49,7 @@ describe('url-params', function() {
     it('matches multiple named parameters', function() {
       const pattern = '/:filename1/merge/:filename2';
       matchPathPattern('/aaa.txt/merge/bbb.txt', pattern).should.be.an.Object()
-          .and.matches({
+          .and.match({
             'fullMatch': 'aaa.txt/merge/bbb.txt',
             'params': {'filename1': 'aaa.txt', 'filename2': 'bbb.txt'},
           });
@@ -58,12 +58,12 @@ describe('url-params', function() {
     it('matches a pattern with an optional named parameter', function() {
       const pattern = '/pony/:name?';
       matchPathPattern('/pony/', pattern).should.be.an.Object()
-          .and.matches({
+          .and.match({
             'fullMatch': 'pony/',
             'params': {'name': undefined},
           });
       matchPathPattern('/pony/spike', pattern).should.be.an.Object()
-          .and.matches({
+          .and.match({
             'fullMatch': 'pony/spike',
             'params': {'name': 'spike'},
           });
@@ -72,17 +72,17 @@ describe('url-params', function() {
     it('matches a pattern with an optional repeating named parameter', function() {
       const pattern = '/pony/:name*';
       matchPathPattern('/pony/', pattern).should.be.an.Object()
-          .and.matches({
+          .and.match({
             'fullMatch': 'pony/',
             'params': {'name': undefined},
           });
       matchPathPattern('/pony/spike', pattern).should.be.an.Object()
-          .and.matches({
+          .and.match({
             'fullMatch': 'pony/spike',
             'params': {'name': 'spike'},
           });
       matchPathPattern('/pony/rainbow/dash', pattern).should.be.an.Object()
-          .and.matches({
+          .and.match({
             'fullMatch': 'pony/spike',
             'params': {'name': ['rainbow', 'dash']},
           });
@@ -92,12 +92,12 @@ describe('url-params', function() {
       const pattern = '/pony/:name+';
       should(matchPathPattern('/pony/', pattern)).be.null();
       matchPathPattern('/pony/fluttershy', pattern).should.be.an.Object()
-          .and.matches({
+          .and.match({
             'fullMatch': 'pony/fluttershy',
             'params': {'name': ['fluttershy']},
           });
       matchPathPattern('/pony/spike/the/dragon', pattern).should.be.an.Object()
-          .and.matches({
+          .and.match({
             'fullMatch': 'pony/spike/the/dragon',
             'params': {'name': ['spike', 'the', 'dragon']},
           });
