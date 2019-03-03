@@ -37,16 +37,17 @@ function matchPathPattern(pathname, pattern) {
   return keys
       .map((v, i) => Object.assign({}, v, {'group': result[i + 1]}))
       .map((v) => {
-        if (v.group) {
-          return Object.assign({}, v, {'result': v.group.match(new RegExp(v.pattern, 'g'))});
-        } else {
-          return v;
-        }
+        if (!v.group) {return v;}
+        const result = {
+          'result': v.repeat ?
+                    result.result = v.group.match(new RegExp(v.pattern, 'g')) :
+                    result.result = v.group.match(v.pattern)[0]};
+        return Object.assign({}, v, result);
       })
       .reduce((acc, cur) => {
         acc[cur.name] = cur.result;
         return acc;
-      });
+      }, {});
 }
 
 module.exports = {
