@@ -59,7 +59,7 @@ describe('url-params', function() {
       const pattern = '/pony/:name?';
       matchPathPattern('/pony/', pattern).should.be.an.Object()
           .and.match({
-            'fullMatch': 'pony/',
+            'fullMatch': 'pony',
             'params': {'name': undefined},
           });
       matchPathPattern('/pony/spike', pattern).should.be.an.Object()
@@ -73,17 +73,17 @@ describe('url-params', function() {
       const pattern = '/pony/:name*';
       matchPathPattern('/pony/', pattern).should.be.an.Object()
           .and.match({
-            'fullMatch': 'pony/',
+            'fullMatch': 'pony',
             'params': {'name': undefined},
           });
       matchPathPattern('/pony/spike', pattern).should.be.an.Object()
           .and.match({
             'fullMatch': 'pony/spike',
-            'params': {'name': 'spike'},
+            'params': {'name': ['spike']},
           });
       matchPathPattern('/pony/rainbow/dash', pattern).should.be.an.Object()
           .and.match({
-            'fullMatch': 'pony/spike',
+            'fullMatch': 'pony/rainbow/dash',
             'params': {'name': ['rainbow', 'dash']},
           });
     });
