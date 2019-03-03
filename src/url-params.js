@@ -42,12 +42,10 @@ function matchPathPattern(pathname, pattern) {
           if (!v.group) {return v;}
 
           // Create a new object from v with a `paramValue`.
-          // The tertiary operator is used to test for repeating parameters, so `match` returns an array.
-          return Object.assign({}, v, {
-            'paramValue': v.repeat ?
-                    v.group.match(new RegExp(v.pattern, 'g')) :
-                    v.group.match(v.pattern)[0],
-          });
+          return {
+            ...v,
+            'paramValue': v.group.match(new RegExp('[^'+ v.delimiter.replace('/', '\\/') +']+', 'g')),
+          };
         })
         .reduce((acc, cur) => {
           acc[cur.name] = cur.paramValue;
