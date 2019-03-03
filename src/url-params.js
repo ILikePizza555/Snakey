@@ -52,4 +52,4 @@ function matchPathPattern(pathname, pattern) {
 module.exports = {
   matchRegex: matchRegex,
   matchPathPattern: matchPathPattern,
-}
+};
