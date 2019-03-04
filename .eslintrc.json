@@ -15,5 +15,7 @@
         "ecmaVersion": 2018
     },
     "rules": {
+        "brace-style" : ["error", "1tbs", {"allowSingleLine": true}],
+        "max-len": [1, { "code": 120 }]
     }
 }
