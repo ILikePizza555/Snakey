@@ -65,7 +65,6 @@ function snake(f) {
 module.exports = {
   bite: bite,
   snake: snake,
-  ParameterizedURL: ParameterizedUrl,
 };
 
 /**
