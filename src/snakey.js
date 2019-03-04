@@ -16,10 +16,8 @@ class Context extends http.IncomingMessage {
   constructor(req, res) {
     super(req);
 
-    /** @memberof Context */
     this.rawUrl = req.url;
-    /** @memberof Context */
-    this.url = new ParameterizedUrl(req.url);
+    this.url = new url.URL(req.url);
 
     this._res = res;
   }
