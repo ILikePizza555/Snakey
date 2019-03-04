@@ -47,7 +47,7 @@ function bite(obs, verb, pathPattern) {
 }
 
 /**
- * Creates a new http.Server with an Observable tied to the request event,
+ * Creates a new http.Server with an Observable bound to the request event,
  * applies the transformation f to the observable,
  * then subscribes to the result to deliver it to the client.
  *
