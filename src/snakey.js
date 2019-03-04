@@ -35,7 +35,14 @@ class Context extends http.IncomingMessage {
 function bite(obs, verb, pathPattern) {
   return obs.pipe(
       rxop.filter((v) => v.method === verb),
-      rxop.filter((v) => v.url === url)
+      rxop.map((v) => {
+        if (pathPattern instanceof RegExp) {
+          return {...v, 'match': matchRegex(v.url.pathname, pathPattern)};
+        } else {
+          return {...v, 'match': matchPathPattern(v.url.pathname, pathPattern)};
+        }
+      }),
+      rxop.filter((v) => Boolean(v.match))
   );
 }
 
