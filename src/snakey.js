@@ -4,6 +4,24 @@ const rxop = require('rxjs/operators');
 const url = require('url');
 const {matchRegex, matchPathPattern} = require('./url-params');
 
+class Response {
+  /**
+   * Creates a new Response object
+   * @param {http.ServerResponse} res 
+   */
+  constructor(res) {
+    this.res = res;
+
+    this.code = 400;
+    this.headers = {};
+    this.body = null;
+  }
+
+  headersSent() {
+    return this.res.headersSent;
+  }
+}
+
 /**
  * Context object that requests are turned into.
  * This class shouldn't be created by the user.
@@ -21,7 +39,11 @@ class Context extends http.IncomingMessage {
     this.rawUrl = req.url;
     this.url = new url.URL(req.url);
 
-    this._res = res;
+    this.res = res;
+  }
+
+  makeResponse() {
+    return new Response(this.res);
   }
 }
 
