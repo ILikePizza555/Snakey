@@ -9,16 +9,28 @@ class Response {
    * Creates a new Response object
    * @param {http.ServerResponse} res 
    */
-  constructor(res) {
+  constructor(res, code = 400, headers = {}, body = null) {
     this.res = res;
 
-    this.code = 400;
-    this.headers = {};
-    this.body = null;
+    this.code = code;
+    this.headers = headers;
+    this.body = body;
+
+    Object.freeze(this);
   }
 
   headersSent() {
     return this.res.headersSent;
+  }
+
+  response(code) {
+    return new Response(code, this.headers, this.body);
+  }
+
+  append(field, value='') {
+    const h = this.headers;
+    h[field] = value;
+    return new Response(this.code, h, this.body);
   }
 }
 
