@@ -28,7 +28,7 @@ class Response {
    * @param {Number} code
    * @return {Response}
    */
-  response(code) {
+  status(code) {
     return new Response(code, this.headers, this.body);
   }
 
