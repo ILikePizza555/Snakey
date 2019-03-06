@@ -11,6 +11,9 @@ interface Responder {
   (res: ServerResponse) : void;
 }
 
+interface TransObservable<T1, T2> {
+  (o: Observable<T1>): Observable<T2>; 
+}
 
 
 /**
