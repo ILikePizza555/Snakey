@@ -1,20 +1,26 @@
-import {Observable} from 'rxjs';
+import {Observable, Observer, fromEvent} from 'rxjs';
 import * as rxop from 'rxjs/operators';
 import {Server, IncomingMessage, ServerResponse} from 'http';
 import {Url} from 'url';
 import {matchRegex, matchPathPattern} from './url-params';
 
 /**
- * Consumes a server response to send out data to the client.
+ * Function interface that consumes a ServerResponse to send data to the client.
  */
 interface Responder {
   (res: ServerResponse) : void;
 }
 
+/**
+ * Function interface that converts one type of Observable to another.
+ */
 interface TransObservable<T1, T2> {
   (o: Observable<T1>): Observable<T2>; 
 }
 
+/**
+ * Observer for a stream of Responder.
+ */
 class ResponderObserver implements Observer<Responder> {
   next(res): void {
     res();
