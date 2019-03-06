@@ -4,6 +4,12 @@ import {Server, IncomingMessage, ServerResponse} from 'http';
 import {Url} from 'url';
 import {matchRegex, matchPathPattern} from './url-params';
 
+/**
+ * Consumes a server response to send out data to the client.
+ */
+interface Responder {
+  (res: ServerResponse) : void;
+}
 
 /**
  * Immutable object that implements the Response interface.
