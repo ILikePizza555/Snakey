@@ -15,6 +15,26 @@ interface TransObservable<T1, T2> {
   (o: Observable<T1>): Observable<T2>; 
 }
 
+class ResponderObserver implements Observer<Responder> {
+  next(res): void {
+    res();
+  }
+
+  error(err): void {
+    console.error(err);
+  }
+  complete(): void {}
+}
+
+class Context {
+  readonly request: IncomingMessage;
+  readonly response: ServerResponse;
+
+  constructor(request: IncomingMessage, response: ServerResponse) {
+    this.request = request;
+    this.response = response;
+  }
+}
 
 /**
  * Creates a new Observable by filtering the method and the url
