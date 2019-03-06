@@ -108,6 +108,19 @@ function snake(f) {
   const server = new http.Server();
   const obs = rx.fromEvent(server, 'request');
 
+  obs.subscribe((x) => {
+    /** @type {http.ServerResponse} */
+    const res = x.res;
+
+    res.statusCode = x.code;
+
+    for (const key of Object.keys(x.headers)) {
+      res.setHeader(key, x.headers[key]);
+    }
+
+    res.write(x.body);
+  });
+
   return server;
 }
 
