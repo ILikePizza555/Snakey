@@ -29,7 +29,7 @@ class Response {
    * @return {Response}
    */
   status(code) {
-    return new Response(code, this.headers, this.body);
+    return new Response(this.res, code, this.headers, this.body);
   }
 
   /**
@@ -41,7 +41,16 @@ class Response {
   append(field, value='') {
     const h = this.headers;
     h[field] = value;
-    return new Response(this.code, h, this.body);
+    return new Response(this.res, this.code, h, this.body);
+  }
+
+  /**
+   * Returns a new Response with the body.
+   * @param {String} body
+   * @return {Response}
+   */
+  setBody(body) {
+    return new Response(this.res, this.code, this.headers, body);
   }
 }
 
