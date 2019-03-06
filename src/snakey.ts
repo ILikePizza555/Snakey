@@ -57,34 +57,13 @@ function bite(obs, verb, pathPattern) {
   );
 }
 
-/**
- * Creates a new http.Server with an Observable bound to the request event,
- * applies the transformation f to the observable,
- * then subscribes to the result to deliver it to the client.
- *
- * Returns the instance of http.Server.
- * @param {TransObservable} f
- * @return {http.Server}
- */
-function snake(f) {
-  const server = new http.Server();
-  const obs = rx.fromEvent(server, 'request')
-      .pipe(rxop.map((x) => new Context(...x)));
-
-  f(obs).subscribe((x) => {
-    /** @type {http.ServerResponse} */
-    const res = x.res;
-
-    res.statusCode = x.code;
-
-    for (const key of Object.keys(x.headers)) {
-      res.setHeader(key, x.headers[key]);
-    }
-
-    res.write(x.body);
-  });
-
-  return server;
+function snake(server: Server, tf: TransObservable<Context, Responder>, observer: ResponderObserver = new ResponderObserver()) {
+  const obs = fromEvent<[IncomingMessage, ServerResponse]>(server, 'request')
+    .pipe(
+      rxop.map(([req, res]) => new Context(req, res))
+    );
+  
+  return tf(obs).subscribe(observer);
 }
 
 module.exports = {
