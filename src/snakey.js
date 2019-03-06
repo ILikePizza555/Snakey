@@ -4,10 +4,16 @@ const rxop = require('rxjs/operators');
 const url = require('url');
 const {matchRegex, matchPathPattern} = require('./url-params');
 
+/**
+ * Immutable object that implements the Response interface.
+ */
 class Response {
   /**
    * Creates a new Response object
-   * @param {http.ServerResponse} res 
+   * @param {http.ServerResponse} res
+   * @param {Number} [code] HTTP status code
+   * @param {Object} [headers] HTTP headers
+   * @param {String?} [body] HTTP body
    */
   constructor(res, code = 400, headers = {}, body = null) {
     this.res = res;
@@ -15,18 +21,23 @@ class Response {
     this.code = code;
     this.headers = headers;
     this.body = body;
-
-    Object.freeze(this);
   }
 
-  headersSent() {
-    return this.res.headersSent;
-  }
-
+  /**
+   * Returns a new response with a status of `code`.
+   * @param {Number} code
+   * @return {Response}
+   */
   response(code) {
     return new Response(code, this.headers, this.body);
   }
 
+  /**
+   * Returns a new Response with the header appended
+   * @param {String} field
+   * @param {String} [value]
+   * @return {Response}
+   */
   append(field, value='') {
     const h = this.headers;
     h[field] = value;
@@ -54,6 +65,10 @@ class Context extends http.IncomingMessage {
     this.res = res;
   }
 
+  /**
+   * Returns a new Response object
+   * @return {Response}
+   */
   makeResponse() {
     return new Response(this.res);
   }
