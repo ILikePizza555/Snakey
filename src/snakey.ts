@@ -1,8 +1,9 @@
-const http = require('http');
-const rx = require('rxjs');
-const rxop = require('rxjs/operators');
-const url = require('url');
-const {matchRegex, matchPathPattern} = require('./url-params');
+import {Observable} from 'rxjs';
+import * as rxop from 'rxjs/operators';
+import {Server, IncomingMessage, ServerResponse} from 'http';
+import {Url} from 'url';
+import {matchRegex, matchPathPattern} from './url-params';
+
 
 /**
  * Immutable object that implements the Response interface.
