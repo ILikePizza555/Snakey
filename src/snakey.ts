@@ -73,16 +73,3 @@ module.exports = {
   'Context': Context,
   'Response': Response,
 };
-
-/**
- * @callback ObservableMap
- * @param {*} v
- * @return {rx.Observable}
- */
-
-/**
- * 🦄💙💗
- * @callback TransObservable
- * @param {rx.Observable}
- * @return {rx.Observable}
- */
