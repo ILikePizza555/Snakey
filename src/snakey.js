@@ -115,9 +115,10 @@ function bite(obs, verb, pathPattern) {
  */
 function snake(f) {
   const server = new http.Server();
-  const obs = rx.fromEvent(server, 'request');
+  const obs = rx.fromEvent(server, 'request')
+      .pipe(rxop.map((x) => new Context(...x)));
 
-  obs.subscribe((x) => {
+  f(obs).subscribe((x) => {
     /** @type {http.ServerResponse} */
     const res = x.res;
 
