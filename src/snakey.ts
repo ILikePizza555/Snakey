@@ -69,6 +69,7 @@ export type Snake<T, R> = Stream<T, R>[]
 
 export type SnakeResult = {
   server: Server,
+  streams: Observable<any>[]
   subscribers: Subscription[]
 }
 
@@ -79,10 +80,12 @@ export function applySnakes(snake: Snake<any, any>,
     .pipe(
       rxop.map(([req, res]) => new Context(req, res))
     );
+
+  const streams = snake.map((s) => s.reduce((acc, cur) => acc.pipe(cur), obs));
   
   return {
     'server': server,
-    'subscribers': snake.map((s) => s.reduce((acc, cur) => acc.pipe(cur), obs))
-                        .map((s) => s.subscribe(observer)),
+    'streams': streams,
+    'subscribers': streams.map((s) => s.subscribe(observer)),
   };
 }
