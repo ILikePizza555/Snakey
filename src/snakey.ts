@@ -3,7 +3,6 @@ import * as rxop from 'rxjs/operators';
 import {Server, IncomingMessage, ServerResponse} from 'http';
 import {matchRegex, matchPathPattern, PathMatch} from './url-params';
 import {parse, URIComponents} from 'uri-js';
-import { type } from 'os';
 
 export type PathPattern = string | RegExp;
 
