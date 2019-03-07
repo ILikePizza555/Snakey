@@ -1,8 +1,9 @@
-import {Observable, Observer, fromEvent, OperatorFunction} from 'rxjs';
+import {Observable, Observer, fromEvent, OperatorFunction, Subscription} from 'rxjs';
 import * as rxop from 'rxjs/operators';
 import {Server, IncomingMessage, ServerResponse} from 'http';
 import {matchRegex, matchPathPattern, PathMatch} from './url-params';
 import {parse, URIComponents} from 'uri-js';
+import { type } from 'os';
 
 export type PathPattern = string | RegExp;
 
@@ -33,7 +34,7 @@ export class Context {
   constructor(readonly request: IncomingMessage, 
               readonly response: ServerResponse,
               uri?: URIComponents,
-              readonly PathMatch: PathMatch | RegExpExecArray | null = null) {
+              readonly pathMatch: PathMatch | RegExpExecArray | null = null) {
     this.uri = uri || parse(request.url);
   }
 
@@ -63,13 +64,32 @@ export function bite(verb: string, pathPattern: PathPattern) {
   );
 }
 
-export function snake(server: Server,
-                      observer: ResponderObserver = new ResponderObserver(),
-                      ...streams: OperatorFunction<Context, Responder>[]) {
+export type Stream = OperatorFunction<any, any>[]
+export function snake(...streams: Stream | Stream[]) {
+  return [...streams];
+}
+
+export type SnakeParams = {
+  streams: Stream[]
+  server?: Server,
+  observer?: ResponderObserver
+}
+
+export type SnakeResult = {
+  server: Server,
+  subscribers: Subscription[]
+}
+
+export function apply(params: SnakeParams): SnakeResult {
+  const {streams, server = new Server(), observer = new ResponderObserver()} = params;
+
   const obs = fromEvent<[IncomingMessage, ServerResponse]>(server, 'request')
     .pipe(
       rxop.map(([req, res]) => new Context(req, res))
     );
   
-  return streams.map((s) => obs.pipe(s).subscribe(observer));
+  return {
+    'server': server,
+    'subscribers': streams.map((s) => s.reduce((acc, cur) => acc.pipe(cur), obs)).map((s) => s.subscribe(observer)),
+  };
 }
