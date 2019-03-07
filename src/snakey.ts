@@ -2,7 +2,6 @@ import {Observable, Observer, fromEvent} from 'rxjs';
 import * as rxop from 'rxjs/operators';
 import {Server, IncomingMessage, ServerResponse} from 'http';
 import {matchRegex, matchPathPattern} from './url-params';
-
 import {parse, URIComponents} from 'uri-js';
 
 /**
@@ -37,6 +36,10 @@ class Context {
   readonly request: IncomingMessage;
   readonly response: ServerResponse;
   readonly uri: URIComponents;
+
+  get method(): string {
+    return this.request.method;
+  }
 
   constructor(request: IncomingMessage, response: ServerResponse) {
     this.request = request;
