@@ -1,8 +1,9 @@
 import {Observable, Observer, fromEvent} from 'rxjs';
 import * as rxop from 'rxjs/operators';
 import {Server, IncomingMessage, ServerResponse} from 'http';
-import {Url} from 'url';
 import {matchRegex, matchPathPattern} from './url-params';
+
+import {parse, URIComponents} from 'uri-js';
 
 /**
  * Function interface that consumes a ServerResponse to send data to the client.
@@ -35,10 +36,13 @@ class ResponderObserver implements Observer<Responder> {
 class Context {
   readonly request: IncomingMessage;
   readonly response: ServerResponse;
+  readonly uri: URIComponents;
 
   constructor(request: IncomingMessage, response: ServerResponse) {
     this.request = request;
     this.response = response;
+
+    this.uri = parse(request.url);
   }
 }
 

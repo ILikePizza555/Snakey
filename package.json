@@ -9,7 +9,8 @@
   "dependencies": {
     "path-to-regexp": "^3.0.0",
     "rxjs": "^6.4.0",
-    "typescript": "^3.3.3333"
+    "typescript": "^3.3.3333",
+    "uri-js": "^4.2.2"
   },
   "devDependencies": {
     "@types/node": "^11.10.5",
