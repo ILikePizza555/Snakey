@@ -4,7 +4,7 @@ const {snake, bite, apply} = require('../build/snakey');
 
 const app = snake(
     snake(
-        bite('GET', '/:param'),
+        bite('GET', '/:param+'),
         switchMap((ctx) => of(
             () => {
               ctx.response.statusMessage = 200;
