@@ -60,7 +60,7 @@ export function bite(verb: string, pathPattern: PathPattern) {
   return (obs: Observable<Context>) => obs.pipe(
       rxop.filter((v) => v.method === verb),
       rxop.map((v) => v.match(pathPattern)),
-      rxop.filter((v) => Boolean(v.match))
+      rxop.filter((v) => Boolean(v.pathMatch))
   );
 }
 
