@@ -64,25 +64,17 @@ export function bite(verb: string, pathPattern: PathPattern) {
   );
 }
 
-export type Stream = OperatorFunction<any, any>[]
-export function snake(...streams: Stream | Stream[]) {
-  return [...streams];
-}
-
-export type SnakeParams = {
-  streams: Stream[]
-  server?: Server,
-  observer?: ResponderObserver
-}
+export type Stream<T, R> = OperatorFunction<T, R>[]
+export type Snake<T, R> = Stream<T, R>[]
 
 export type SnakeResult = {
   server: Server,
   subscribers: Subscription[]
 }
 
-export function apply(params: SnakeParams): SnakeResult {
-  const {streams, server = new Server(), observer = new ResponderObserver()} = params;
-
+export function applySnakes(snake: Snake<any, any>, 
+                            server: Server = new Server(),
+                            observer = new ResponderObserver): SnakeResult {
   const obs = fromEvent<[IncomingMessage, ServerResponse]>(server, 'request')
     .pipe(
       rxop.map(([req, res]) => new Context(req, res))
@@ -90,6 +82,7 @@ export function apply(params: SnakeParams): SnakeResult {
   
   return {
     'server': server,
-    'subscribers': streams.map((s) => s.reduce((acc, cur) => acc.pipe(cur), obs)).map((s) => s.subscribe(observer)),
+    'subscribers': snake.map((s) => s.reduce((acc, cur) => acc.pipe(cur), obs))
+                        .map((s) => s.subscribe(observer)),
   };
 }
