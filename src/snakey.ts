@@ -57,23 +57,11 @@ class Context {
   }
 }
 
-/**
- * Creates a new Observable by filtering the method and the url
- * @param {rx.Observable} obs
- * @param {String} verb
- * @param {String|RegExp} pathPattern
- * @return {rx.Observable}
- */
-function bite(obs, verb, pathPattern) {
+
+function bite(obs: Observable<Context>, verb: string, pathPattern: PathPattern) {
   return obs.pipe(
       rxop.filter((v) => v.method === verb),
-      rxop.map((v) => {
-        if (pathPattern instanceof RegExp) {
-          return {...v, 'match': matchRegex(v.url.pathname, pathPattern)};
-        } else {
-          return {...v, 'match': matchPathPattern(v.url.pathname, pathPattern)};
-        }
-      }),
+      rxop.map((v) => v.match(pathPattern)),
       rxop.filter((v) => Boolean(v.match))
   );
 }
