@@ -1,8 +1,10 @@
 import {Observable, Observer, fromEvent} from 'rxjs';
 import * as rxop from 'rxjs/operators';
 import {Server, IncomingMessage, ServerResponse} from 'http';
-import {matchRegex, matchPathPattern} from './url-params';
+import {matchRegex, matchPathPattern, PathMatch} from './url-params';
 import {parse, URIComponents} from 'uri-js';
+
+type PathPattern = string | RegExp;
 
 /**
  * Function interface that consumes a ServerResponse to send data to the client.
@@ -33,19 +35,25 @@ class ResponderObserver implements Observer<Responder> {
 }
 
 class Context {
-  readonly request: IncomingMessage;
-  readonly response: ServerResponse;
   readonly uri: URIComponents;
+
+  constructor(readonly request: IncomingMessage, 
+              readonly response: ServerResponse,
+              uri?: URIComponents,
+              readonly PathMatch: PathMatch | RegExpExecArray | null = null) {
+    this.uri = uri || parse(request.url);
+  }
 
   get method(): string {
     return this.request.method;
   }
 
-  constructor(request: IncomingMessage, response: ServerResponse) {
-    this.request = request;
-    this.response = response;
-
-    this.uri = parse(request.url);
+  match(pattern: PathPattern) {
+    if (typeof pattern === 'string') {
+      return new Context(this.request, this.response, this.uri, matchPathPattern(this.uri.path, pattern));
+    } else {
+      return new Context(this.request, this.response, this.uri, matchRegex(this.uri.path, pattern));
+    }
   }
 }
 
