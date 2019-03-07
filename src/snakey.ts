@@ -1,4 +1,4 @@
-import {Observable, Observer, fromEvent} from 'rxjs';
+import {Observable, Observer, fromEvent, OperatorFunction} from 'rxjs';
 import * as rxop from 'rxjs/operators';
 import {Server, IncomingMessage, ServerResponse} from 'http';
 import {matchRegex, matchPathPattern, PathMatch} from './url-params';
@@ -11,13 +11,6 @@ export type PathPattern = string | RegExp;
  */
 export interface Responder {
   (res: ServerResponse) : void;
-}
-
-/**
- * Function interface that converts one type of Observable to another.
- */
-export interface TransObservable<T1, T2> {
-  (o: Observable<T1>): Observable<T2>; 
 }
 
 /**
@@ -57,20 +50,26 @@ export class Context {
   }
 }
 
-
-export function bite(obs: Observable<Context>, verb: string, pathPattern: PathPattern) {
-  return obs.pipe(
+/**
+ * Operator that filters HTTP requests by `verb` and `pathPattern`.
+ * @param verb 
+ * @param pathPattern 
+ */
+export function bite(verb: string, pathPattern: PathPattern) {
+  return (obs: Observable<Context>) => obs.pipe(
       rxop.filter((v) => v.method === verb),
       rxop.map((v) => v.match(pathPattern)),
       rxop.filter((v) => Boolean(v.match))
   );
 }
 
-export function snake(server: Server, tf: TransObservable<Context, Responder>, observer: ResponderObserver = new ResponderObserver()) {
+export function snake(server: Server,
+                      observer: ResponderObserver = new ResponderObserver(),
+                      ...streams: OperatorFunction<Context, Responder>[]) {
   const obs = fromEvent<[IncomingMessage, ServerResponse]>(server, 'request')
     .pipe(
       rxop.map(([req, res]) => new Context(req, res))
     );
   
-  return tf(obs).subscribe(observer);
+  return streams.map((s) => obs.pipe(s).subscribe(observer));
 }
