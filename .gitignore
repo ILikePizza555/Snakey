@@ -62,4 +62,4 @@ typings/
 
 yarn.lock
 .vscode/
-build
+dist
