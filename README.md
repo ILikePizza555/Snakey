@@ -1,6 +1,14 @@
-Snakey is a Observer-based web microframework for Node.js
+Snakey is a Observer-based web microframework for Node.js, built using Rxjs. Inspired by Express.js.
+
+# Why?
+
+I love Express.js. I love how simple it is to get an application up and running, but I dislike using callbacks for everything, and I dislike imperative programming. I searched far and wide for a callback-free web framework for Node.js, and was disappointed when I was unable to find anything. Thus, Snakey was born.
+
+Snakey is for people like me who want to prevent themselves from getting trapped in Callback Hell, and also want to reap the benifits of Javascript's functional programming capabilities.
 
 # Installation
+
+Note that Snakey is still very much experimental.
 
 ```
 npm install snakey
@@ -20,6 +28,8 @@ yarn add snakey
 # Documentation
 
 ## Quickstart
+
+Snakey provides you with an [Observable](https://rxjs.dev/api/index/class/Observable) stream of HTTP requests, and functional programming tools to shape the stream into whatever your app needs.
 
 ```js
 const {of} = require('rxjs');
@@ -41,21 +51,13 @@ const {server, streams, subscribers} = applySnakes([
 server.listen(9000);
 ```
 
-## Snakes and Streams
+## Snakes
 
-At the core of Snakey is the `Snake` type. What's a `Snake`? It looks like this:
-
-```
-[]
-```
-
-That's right, an array. More specifically, an array of `Stream`s. What's a `Stream`? It's also an array! An array of functions that operate on `Observable`s. In technical terms, a `Stream` is an array of operators. 
-
-So, a `Snake` is an array of arrays of functions.
+At the core of Snakey is the `Snake` type. A `Snake` is an array of rxjs [Operators](https://rxjs.dev/api/index/interface/Operator). 
 
 ## applySnake
 
-The `applySnake` function takes a `Snake` and generates multiple `Observable`s from the `Stream`s. These `Observable`s are then connected to a Node `http.Server`, and subscribed to.
+The `applySnake` function takes an array of `Snake`s and generates multiple `Observable`s for each `Snake`. These `Observable`s are then connected to a Node `http.Server`, and subscribed to.
 
 ```ts
 export function applySnakes(snake: Snake<any, any>, 
@@ -63,7 +65,7 @@ export function applySnakes(snake: Snake<any, any>,
                             observer = new ResponderObserver): SnakeResult;
 ```
 
-The return value of `applySnake` is on object containing the server, an array containing the generated `Observable`s and an array containing the `Subscription`s.
+The return value of `applySnake` is an object of three fields that contain the server, the generated `Observable`s and the `Subscription`s.
 
 ```ts
 export type SnakeResult = {
@@ -73,11 +75,11 @@ export type SnakeResult = {
 }
 ```
 
-You can supply your own `Observer` to use, but the default behavior is to call a function. This does mean that your `Stream`s should eventually return a function. This function is referred to as the `Responder`.
+You can supply your own [Observer](https://rxjs.dev/api/index/interface/Observer) to use, but the default behavior is to call a function. This does mean that your `Stream`s should eventually return a function. This function is referred to as the `Responder`.
 
 ## Context
 
-The beginning of all requests is `Context`. `applySnake` automatically converts all requests into `Context` objects. When building a `Snake`, you should assume that your `Stream`s will be called over a `Observable<Context>` object.
+The beginning of all requests is `Context`. `applySnake` automatically converts all requests into `Context` objects. When building a `Snake`, you should assume that it will be piped over a `Observable<Context>` object.
 
 ### Properties
 
@@ -96,4 +98,4 @@ If `uri.path` matches `pattern` a new Context object with `pathMatch` set will b
 
 ## bite(verb: string, pathPattern: string | RegExp)
 
-`bite` is an operator for `Observable<Context>`. It creates an `Observable<Context>` that match the `verb` and `pathPattern`. Path matching is done using `Context.match`, so any parameters or RegEx groups are preserved in the `pathMatch` property of `Context`.
+`bite` is an operator for `Observable<Context>`. It creates an `Observable<Context>` that matches the `verb` and `pathPattern`. Path matching is done using `Context.match`, so any parameters or RegEx groups are preserved in the `pathMatch` property of `Context`.
