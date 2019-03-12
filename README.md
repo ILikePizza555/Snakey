@@ -22,6 +22,7 @@ yarn add snakey
 ## Quickstart
 
 ```js
+const {of} = require('rxjs');
 const {bite, applySnakes} = require('snakey');
 
 const {server, streams, subscribers} = applySnakes([
