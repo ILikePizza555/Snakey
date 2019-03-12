@@ -1,14 +1,11 @@
 /* eslint require-jsdoc: 0 */
-const {series, dest, src} = require('gulp');
+const {dest, src} = require('gulp');
 const ts = require('gulp-typescript');
-const path = require('path');
 const mocha = require('gulp-mocha');
-const gClean = require('gulp-clean');
 
 const tsProject = ts.createProject('tsconfig.json');
 
-const LIB_DEST = 'dist/lib';
-const TEST_DEST = 'dist/test';
+const LIB_DEST = 'dist';
 
 function buildLib() {
   return tsProject.src()
