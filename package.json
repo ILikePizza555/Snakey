@@ -1,6 +1,6 @@
 {
   "name": "snakey",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "An Obeserver-based web microframework for Node.js",
   "main": "dist/snakey.js",
   "types": "dist/snakey.d.ts",
