@@ -1,8 +1,8 @@
 /* eslint-env node, mocha */
-const assert = require('assert');
-const should = require('should');
+import assert = require('assert');
+import should = require('should');
 
-const {matchRegex, matchPathPattern} = require('../src/url-params');
+import {matchRegex, matchPathPattern} from '../src/match';
 
 describe('url-params', function() {
   describe(':matchRegex()', function() {
