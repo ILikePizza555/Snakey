@@ -48,13 +48,13 @@ At the core of Snakey is the `Snake` type. What's a `Snake`? It looks like this:
 []
 ```
 
-That's right, an array. More specifically, an array of `Stream`s. What's a `Stream`? It's also an array! An array of functions that operate on `Observable`s. In technical terms, a `Stream` is an arary of operators. 
+That's right, an array. More specifically, an array of `Stream`s. What's a `Stream`? It's also an array! An array of functions that operate on `Observable`s. In technical terms, a `Stream` is an array of operators. 
 
 So, a `Snake` is an array of arrays of functions.
 
 ## applySnake
 
-The `applySnake` function takes a `Snake` and generates multiple `Observable`s from the `Stream`s. These `Observable`s are then connected to a Node `http.Server`, and subscribed too.
+The `applySnake` function takes a `Snake` and generates multiple `Observable`s from the `Stream`s. These `Observable`s are then connected to a Node `http.Server`, and subscribed to.
 
 ```ts
 export function applySnakes(snake: Snake<any, any>, 
@@ -62,7 +62,7 @@ export function applySnakes(snake: Snake<any, any>,
                             observer = new ResponderObserver): SnakeResult;
 ```
 
-The return value of `applySnake` is on object containing the server, an array containing the generated `Observable`s and an aray containing the `Subscription`s.
+The return value of `applySnake` is on object containing the server, an array containing the generated `Observable`s and an array containing the `Subscription`s.
 
 ```ts
 export type SnakeResult = {
