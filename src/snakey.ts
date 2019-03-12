@@ -63,8 +63,7 @@ export function bite(verb: string, pathPattern: PathPattern) {
   );
 }
 
-export type Stream<T, R> = OperatorFunction<T, R>[]
-export type Snake<T, R> = Stream<T, R>[]
+export type Snake<T, R> = OperatorFunction<T, R>[]
 
 export type SnakeResult = {
   server: Server,
@@ -72,7 +71,7 @@ export type SnakeResult = {
   subscribers: Subscription[]
 }
 
-export function applySnakes(snake: Snake<any, any>, 
+export function applySnakes(snake: Snake<any, any>[], 
                             server: Server = new Server(),
                             observer = new ResponderObserver): SnakeResult {
   const obs = fromEvent<[IncomingMessage, ServerResponse]>(server, 'request')
