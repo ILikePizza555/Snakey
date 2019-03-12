@@ -1,6 +1,6 @@
 /* eslint-env node, mocha */
 import assert = require('assert');
-import should = require('should');
+import * as should from 'should';
 
 import {matchRegex, matchPathPattern} from '../src/match';
 
