@@ -8,7 +8,7 @@ import pathToRegexp = require('path-to-regexp');
  * @param {RegExp} regex
  * @return {RegExpMatchArray?}
  */
-function matchRegex(pathname: string, regex: RegExp): RegExpMatchArray | null {
+export function matchRegex(pathname: string, regex: RegExp): RegExpMatchArray | null {
   if (!(regex instanceof RegExp)) {
     throw new TypeError('regex should be a Regex object.');
   }
@@ -41,7 +41,7 @@ interface PathMatch {
    * @param {string} pattern
    * @return {PathMatch?}
    */
-function matchPathPattern(pathname: string, pattern: string) : PathMatch | null {
+export function matchPathPattern(pathname: string, pattern: string) : PathMatch | null {
   const keys = [];
   const regex = pathToRegexp(pattern, keys);
   const execResult = regex.exec(pathname);
@@ -65,8 +65,3 @@ function matchPathPattern(pathname: string, pattern: string) : PathMatch | null 
           return acc;
         }, {})};
 }
-
-module.exports = {
-  matchRegex: matchRegex,
-  matchPathPattern: matchPathPattern,
-};
