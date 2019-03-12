@@ -1,13 +1,23 @@
 {
   "name": "snakey",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "An Obeserver-based web microframework for Node.js",
   "main": "dist/snakey.js",
   "types": "dist/snakey.d.ts",
   "repository": "https://github.com/ILikePizza555/Snakey",
   "author": "Isaac Avram <avrisaac555@gmail.com>",
   "license": "MIT",
-  "keywords": ["Observable", "web", "http", "rxjs", "path", "snakey", "snake", "stream", "bite"],
+  "keywords": [
+    "Observable",
+    "web",
+    "http",
+    "rxjs",
+    "path",
+    "snakey",
+    "snake",
+    "stream",
+    "bite"
+  ],
   "dependencies": {
     "path-to-regexp": "^3.0.0",
     "rxjs": "^6.4.0",
