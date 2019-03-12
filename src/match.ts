@@ -28,7 +28,7 @@ export function matchRegex(pathname: string, regex: RegExp): RegExpMatchArray | 
  * @property {string} fullMatch - The full match against the pathname
  * @property {Object} params - A map of parameter names to the values.
  */
-interface PathMatch {
+export interface PathMatch {
   path: string;
   fullMatch: string;
   params: Map<string, string[] | string | undefined>;

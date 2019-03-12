@@ -1,7 +1,7 @@
 import {Observable, Observer, fromEvent, OperatorFunction, Subscription} from 'rxjs';
 import * as rxop from 'rxjs/operators';
 import {Server, IncomingMessage, ServerResponse} from 'http';
-import {matchRegex, matchPathPattern, PathMatch} from './url-params';
+import {matchRegex, matchPathPattern, PathMatch} from './match';
 import {parse, URIComponents} from 'uri-js';
 
 export type PathPattern = string | RegExp;
@@ -33,7 +33,7 @@ export class Context {
   constructor(readonly request: IncomingMessage, 
               readonly response: ServerResponse,
               uri?: URIComponents,
-              readonly pathMatch: PathMatch | RegExpExecArray | null = null) {
+              readonly pathMatch: PathMatch | RegExpMatchArray | null = null) {
     this.uri = uri || parse(request.url);
   }
 
