@@ -2,12 +2,19 @@ Snakey is a Observer-based web microframework for Node.js
 
 # Installation
 
-Snakey is still very much experimental, so I won't be putting it on npm yet.
-Currently, the best way is to copy the src directory into your project.
+```
+npm install snakey
+```
+
+or 
+
+```
+yarn add snakey
+```
 
 # Roadmap
 
-- Convert url-params to TypeScript
+- ~Convert url-params to TypeScript~
 - Add a functional API for building responses
 
 # Documentation
