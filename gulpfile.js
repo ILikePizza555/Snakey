@@ -3,6 +3,7 @@ const {series, dest, src} = require('gulp');
 const ts = require('gulp-typescript');
 const path = require('path');
 const mocha = require('gulp-mocha');
+const gClean = require('gulp-clean');
 
 const tsProject = ts.createProject('tsconfig.json');
 
@@ -16,18 +17,13 @@ function buildLib() {
       .pipe(dest(LIB_DEST));
 }
 
-function buildTest() {
-  return src('./test/*.test.ts')
-      .pipe(ts())
-      .js
-      .pipe(dest(TEST_DEST));
-}
-
 function runUnitTests() {
-  return src(path.join(TEST_DEST, '*.js'))
-      .pipe(mocha({reporter: 'nyan'}));
+  return src('test/*.test.ts', {read: false})
+      .pipe(mocha({
+        reporter: 'nyan',
+        require: 'ts-node/register',
+      }));
 }
 
 exports.buildLib = buildLib;
-exports.buildTest = buildTest;
-exports.runTests = series(buildTest, runUnitTests);
+exports.runUnitTests = runUnitTests;
