@@ -6,10 +6,6 @@ import {matchRegex, matchPathPattern} from '../src/match';
 
 describe('url-params', function() {
   describe(':matchRegex()', function() {
-    it('throws an error if a RegExp object is not provided', function() {
-      (() => matchRegex('/twilight/sparkle/', '')).should.throw(TypeError);
-    });
-
     it('returns null is no match was found', function() {
       should(matchRegex('/only/words/', /\d/)).be.null();
     });
