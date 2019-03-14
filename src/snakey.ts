@@ -70,15 +70,14 @@ export type ApplyResult = {
   subscribers: Subscription[]
 }
 
+const contextMap = rxop.map(([req, res]) => new Context(req, res));
+
 export function applySnakes(snakes: Snake<Context, Responder>[],
                             server: Server = new Server(),
                             observer = new ResponderObserver): ApplyResult {
+  
   const obs = fromEvent<[IncomingMessage, ServerResponse]>(server, 'request')
-    .pipe(
-      rxop.map(([req, res]) => new Context(req, res))
-    );
-
-  const streams = snakes.map((s) => s.reduce((acc, cur) => acc.pipe(cur), obs));
+  const streams = snakes.map((s) => obs.pipe(contextMap, s));
   
   return {
     'server': server,
