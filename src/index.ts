@@ -1,4 +1,4 @@
-import {Observable, Observer, fromEvent, OperatorFunction, Subscription} from 'rxjs';
+import {Observable, Observer, fromEvent, Subscription} from 'rxjs';
 import * as rxop from 'rxjs/operators';
 import {Server, IncomingMessage, ServerResponse} from 'http';
 import {matchRegex, matchPathPattern, PathMatch} from './match';
