@@ -31,9 +31,9 @@ yarn add snakey
 
 Snakey provides you with an [Observable](https://rxjs.dev/api/index/class/Observable) stream of HTTP requests, and functional programming tools to shape the stream into whatever your app needs.
 
-```js
-const {of} = require('rxjs');
-const {bite, snake, applySnakes} = require('snakey');
+```ts
+import {of} from 'rxjs';
+import {bite, snake, Context, applySnakes} from 'snakey';
 
 const app = [
   snake<Context>()
