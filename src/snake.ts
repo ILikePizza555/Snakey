@@ -1,8 +1,12 @@
 import { Observable, OperatorFunction, UnaryFunction } from "rxjs";
+import { removeDotSegments } from "uri-js";
 
 /**
  * A Snake is an OperatorFunction that can be chained with another OperatorFunction
  * to produce a new Snake with a different return value.
+ * 
+ * Because snakes build individually on each other, this creates a type-safe method
+ * of passing in a series of operator functions.
  */
 export interface Snake<T, R> extends OperatorFunction<T, R> {
     chain<N>(op: OperatorFunction<R, N>) : Snake<T, N>
@@ -18,7 +22,7 @@ function compose<A, B, C>(f1: UnaryFunction<A, B>, f2: UnaryFunction<B, C>): Una
  */
 export function tfSnake<T, R>(op: OperatorFunction<T, R>): Snake<T, R> {
     const rv: Snake<T, R> = (o: Observable<T>) => op(o);
-    rv.chain = <N>(f: OperatorFunction<R, N>) => tfSnake(compose(this, f));
+    rv.chain = <N>(f: OperatorFunction<R, N>) => tfSnake(compose(rv, f));
     return rv;
 }
 
