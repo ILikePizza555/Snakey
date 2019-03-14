@@ -4,29 +4,9 @@ import {Server, IncomingMessage, ServerResponse} from 'http';
 import {matchRegex, matchPathPattern, PathMatch} from './match';
 import {parse, URIComponents} from 'uri-js';
 import { Snake } from './snake';
+import { Responder, ResponderObserver } from './response';
 
 export type PathPattern = string | RegExp;
-
-/**
- * Function interface that consumes a ServerResponse to send data to the client.
- */
-export interface Responder {
-  (res: ServerResponse) : void;
-}
-
-/**
- * Observer for a stream of Responder.
- */
-export class ResponderObserver implements Observer<Responder> {
-  next(res): void {
-    res();
-  }
-
-  error(err): void {
-    console.error(err);
-  }
-  complete(): void {}
-}
 
 export class Context {
   readonly uri: URIComponents;
