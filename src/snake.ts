@@ -6,6 +6,8 @@ import { Observable, OperatorFunction, UnaryFunction } from "rxjs";
  * 
  * Because snakes build individually on each other, this creates a type-safe method
  * of passing in a series of operator functions.
+ * 
+ * ... This is just a Functor, isn't it?
  */
 export interface Snake<T, R> extends OperatorFunction<T, R> {
     chain<N>(op: OperatorFunction<R, N>) : Snake<T, N>
