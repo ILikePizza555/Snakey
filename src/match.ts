@@ -1,5 +1,7 @@
 import pathToRegexp = require('path-to-regexp');
 
+export type PathPattern = string | RegExp;
+
 /**
  * Matches the pathname against the provided RegExp.
  *

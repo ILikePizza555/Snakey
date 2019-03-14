@@ -1,12 +1,10 @@
 import {Observable, Observer, fromEvent, Subscription} from 'rxjs';
 import * as rxop from 'rxjs/operators';
 import {Server, IncomingMessage, ServerResponse} from 'http';
-import {matchRegex, matchPathPattern, PathMatch} from './match';
+import {matchRegex, matchPathPattern, PathMatch, PathPattern} from './match';
 import {parse, URIComponents} from 'uri-js';
 import { Snake } from './snake';
 import { Responder, ResponderObserver } from './response';
-
-export type PathPattern = string | RegExp;
 
 export class Context {
   readonly uri: URIComponents;
