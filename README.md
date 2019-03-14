@@ -33,21 +33,23 @@ Snakey provides you with an [Observable](https://rxjs.dev/api/index/class/Observ
 
 ```js
 const {of} = require('rxjs');
-const {bite, applySnakes} = require('snakey');
+const {bite, snake, applySnakes} = require('snakey');
 
-const {server, streams, subscribers} = applySnakes([
-    [
-        bite('GET', '/'),
-        switchMap((ctx) => of(
-            () => {
-              ctx.response.statusMessage = 200;
-              ctx.response.write("Hello world!");
-              ctx.response.end();
-            }
-        ))
-    ]
-]);
+const app = [
+  snake<Context>()
+    .chain(bite('GET', '/'))
+    .chain(
+      switchMap((ctx) => of(
+          () => {
+            ctx.response.statusMessage = 200;
+            ctx.response.write("Hello world!");
+            ctx.response.end();
+          }
+      ))
+    )
+];
 
+const {server, streams, subscribers} = applySnakes(app);
 server.listen(9000);
 ```
 
