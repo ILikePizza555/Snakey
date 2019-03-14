@@ -1,5 +1,4 @@
 import { Observable, OperatorFunction, UnaryFunction } from "rxjs";
-import { removeDotSegments } from "uri-js";
 
 /**
  * A Snake is an OperatorFunction that can be chained with another OperatorFunction
