@@ -10,7 +10,6 @@ const LIB_DEST = 'dist';
 function buildLib() {
   return tsProject.src()
       .pipe(tsProject())
-      .js
       .pipe(dest(LIB_DEST));
 }
 
