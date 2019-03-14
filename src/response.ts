@@ -36,7 +36,7 @@ export class Responder {
 */
 export class ResponderObserver implements Observer<Responder> {
     next(res): void {
-        res();
+        res.respond();
     }
 
     error(err): void {
