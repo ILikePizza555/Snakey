@@ -64,8 +64,7 @@ export function bite(verb: string, pathPattern: PathPattern) {
   );
 }
 
-
-export type SnakeResult = {
+export type ApplyResult = {
   server: Server,
   streams: Observable<any>[]
   subscribers: Subscription[]
@@ -73,7 +72,7 @@ export type SnakeResult = {
 
 export function applySnakes(snakes: Snake<Context, Responder>[],
                             server: Server = new Server(),
-                            observer = new ResponderObserver): SnakeResult {
+                            observer = new ResponderObserver): ApplyResult {
   const obs = fromEvent<[IncomingMessage, ServerResponse]>(server, 'request')
     .pipe(
       rxop.map(([req, res]) => new Context(req, res))
