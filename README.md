@@ -53,14 +53,32 @@ server.listen(9000);
 
 ## Snakes
 
-At the core of Snakey is the `Snake` type. A `Snake` is an array of rxjs [Operators](https://rxjs.dev/api/index/interface/Operator). 
+At the core of Snakey is the `Snake` type. A `Snake` is simply an [OperatorFunction](https://rxjs-dev.firebaseapp.com/api/index/interface/OperatorFunction) with a `chain` method. `chain` composes the `Snake` with a given `OperatorFunction` to form a new `Snake`. Because `Snake`s build on each other, this effectively creates a type-safe series of Operators.
+
+```ts
+export interface Snake<T, R> extends OperatorFunction<T, R> {
+    chain<N>(op: OperatorFunction<R, N>) : Snake<T, N>
+}
+```
+
+### Creation
+
+`Snake`s can be created using the `snake` function. This function takes an optional `OperatorFunction` and lifts it to a `Snake`.
+
+```ts
+import {snake} from 'snakey/snake';
+import {map} from 'rxjs/operators';
+
+snake<String>(); // Snake<String, String>
+snake<Number, String>(map(n => String(n))); // Snake<Number, String>
+```
 
 ## applySnake
 
 The `applySnake` function takes an array of `Snake`s and generates multiple `Observable`s for each `Snake`. These `Observable`s are then connected to a Node `http.Server`, and subscribed to.
 
 ```ts
-export function applySnakes(snake: Snake<any, any>, 
+export function applySnakes(snakes: Snake<Context, Responder>[], 
                             server: Server = new Server(),
                             observer = new ResponderObserver): SnakeResult;
 ```
@@ -79,7 +97,7 @@ You can supply your own [Observer](https://rxjs.dev/api/index/interface/Observer
 
 ## Context
 
-The beginning of all requests is `Context`. `applySnake` automatically converts all requests into `Context` objects. When building a `Snake`, you should assume that it will be piped over a `Observable<Context>` object.
+The beginning of all requests is `Context`. `applySnake` automatically converts all requests into `Context` objects.
 
 ### Properties
 
