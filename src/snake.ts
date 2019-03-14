@@ -26,8 +26,10 @@ export function tfSnake<T, R>(op: OperatorFunction<T, R>): Snake<T, R> {
 }
 
 /**
- * Instantiates an 'indentity' snake.
+ * Creates a new snake from the OperatorFunction. If no operator function is passed,
+ * then an "indentity Snake" is created.
  */
-export function iSnake<T>(): Snake<T, T> {
-    return tfSnake((o: Observable<T>) => o);
+export function snake<T, R>(op: OperatorFunction<T, R>): Snake<T, R>;
+export function snake<T>(op: OperatorFunction<T, T> = (t: Observable<T>) => t): Snake<T, T> {
+    return tfSnake(op);
 }
