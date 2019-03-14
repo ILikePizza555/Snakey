@@ -3,6 +3,7 @@ import * as rxop from 'rxjs/operators';
 import {Server, IncomingMessage, ServerResponse} from 'http';
 import {matchRegex, matchPathPattern, PathMatch} from './match';
 import {parse, URIComponents} from 'uri-js';
+import { Snake } from './snake';
 
 export type PathPattern = string | RegExp;
 
@@ -63,7 +64,6 @@ export function bite(verb: string, pathPattern: PathPattern) {
   );
 }
 
-export type Snake<T, R> = OperatorFunction<T, R>[]
 
 export type SnakeResult = {
   server: Server,
@@ -71,7 +71,7 @@ export type SnakeResult = {
   subscribers: Subscription[]
 }
 
-export function applySnakes(snake: Snake<any, any>[], 
+export function applySnakes(snakes: Snake<Context, Responder>[],
                             server: Server = new Server(),
                             observer = new ResponderObserver): SnakeResult {
   const obs = fromEvent<[IncomingMessage, ServerResponse]>(server, 'request')
@@ -79,7 +79,7 @@ export function applySnakes(snake: Snake<any, any>[],
       rxop.map(([req, res]) => new Context(req, res))
     );
 
-  const streams = snake.map((s) => s.reduce((acc, cur) => acc.pipe(cur), obs));
+  const streams = snakes.map((s) => s.reduce((acc, cur) => acc.pipe(cur), obs));
   
   return {
     'server': server,
