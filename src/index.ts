@@ -6,6 +6,8 @@ import {parse, URIComponents} from 'uri-js';
 import { Snake } from './snake';
 import { Responder, ResponderObserver } from './response';
 
+export {snake, Snake} from './snake';
+
 export class Context {
   readonly uri: URIComponents;
 
