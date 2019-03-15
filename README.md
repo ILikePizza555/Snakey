@@ -122,12 +122,13 @@ The `Responder` class is simply the collection of data needed to construct and s
 ### Properties
 
 | attributes | name | type | description |
+| ---------- | ---- | ---- | ----------- |
 | readonly |resObj | http.ServerResponse | The response object recieved from Node. |
 | readonly | body | string | {toString(): string} | The body of the response to send to the client. |
 | readonly | status | number | The HTTP status code of the response to send to the client. (default: 200) |
 | readonly | headers | HeaderMap | The HTTP headers to write to the client. |
 | readonly | encoding | string | The encoding of the body. (default: 'UTF-8') |
-| readonly | endResponse | bool | If `true`, the call to `respond` will terminate the connection with the client. (default: true)|
+| readonly | endResponse | bool | If `true`, the call to `respond` will terminate the connection with the client. (default: true) |
 
 ### response(): void
 
