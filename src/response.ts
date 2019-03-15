@@ -61,8 +61,21 @@ export function textResponse(text: string,
     return map((ctx: Context) => new Responder(ctx.response, {body: text, status: status, encoding: encoding}))
 }
 
+/**
+ * Creates a new OperatorFunction that takes a Context and constructs a Responder.
+ * 
+ * The Responder will write `o` as a JSON string to the client, with an HTTP status code of `status`.
+ * The appropriate content-type header will be set.
+ * @param o 
+ * @param status 
+ */
 export function jsonResponse(o: Object, status: number = 200): OperatorFunction<Context, Responder> {
-    return map((ctx: Context) => new Responder(ctx.response, {body: JSON.stringify(o), status: status}));
+    return map((ctx: Context) => 
+        new Responder(ctx.response, {
+            body: JSON.stringify(o), 
+            status: status,
+            headers: {"Content-Type": "application/json"}
+        }));
 }
 
 /**
