@@ -112,3 +112,23 @@ If `uri.path` matches `pattern` a new Context object with `pathMatch` set will b
 ## bite(verb: string, pathPattern: string | RegExp)
 
 `bite` is an operator for `Observable<Context>`. It creates an `Observable<Context>` that matches the `verb` and `pathPattern`. Path matching is done using `Context.match`, so any parameters or RegEx groups are preserved in the `pathMatch` property of `Context`.
+
+## Responder
+
+Snakey provides its own objects for writing responses to client. The one you'll likely be using most oftens is the `Responder` class. Indeed, this expected return value for every `Snake`. 
+
+The `Responder` class is simply the collection of data needed to construct and send a response to the client. It provides at least one method: `respond` which constructs and sends this response. This method is called by the default `Observer`. 
+
+### Properties
+
+| attributes | name | type | description |
+| readonly |resObj | http.ServerResponse | The response object recieved from Node. |
+| readonly | body | string | {toString(): string} | The body of the response to send to the client. |
+| readonly | status | number | The HTTP status code of the response to send to the client. (default: 200) |
+| readonly | headers | HeaderMap | The HTTP headers to write to the client. |
+| readonly | encoding | string | The encoding of the body. (default: 'UTF-8') |
+| readonly | endResponse | bool | If `true`, the call to `respond` will terminate the connection with the client. (default: true)|
+
+### response(): void
+
+Writes the HTTP response to the client. If `endResponse` evaluates to `true` the connection will be terminated.
