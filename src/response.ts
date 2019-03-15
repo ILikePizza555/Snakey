@@ -47,6 +47,21 @@ export class Responder {
 }
 
 /**
+ * Creates a new OperatorFunction that takes a Context and constructs a Responder.
+ * 
+ * The responder will write `text` to the client, with an HTTP status code of `status`.
+ * 
+ * @param text The text that will be written to the client
+ * @param status The HTTP status code.
+ * @param encoding THe encoding of the string
+ */
+export function textResponse(text: string);
+export function textResponse(text: string, status: number);
+export function textResponse(text: string, status: number = 200, encoding: string = "utf-8") {
+    return map((ctx: Context) => new Responder(ctx.response, {body: text, status: status, encoding: encoding}))
+}
+
+/**
 * Observer for a stream of Responder.
 */
 export class ResponderObserver implements Observer<Responder> {
