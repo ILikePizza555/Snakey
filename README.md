@@ -34,22 +34,15 @@ Snakey provides you with an [Observable](https://rxjs.dev/api/index/class/Observ
 ```ts
 import {of} from 'rxjs';
 import {bite, snake, Context, applySnakes} from 'snakey';
+import {textResponse} from 'snakey/response';
 
 const app = [
   snake<Context>()
     .chain(bite('GET', '/'))
-    .chain(
-      switchMap((ctx) => of(
-          () => {
-            ctx.response.statusMessage = 200;
-            ctx.response.write("Hello world!");
-            ctx.response.end();
-          }
-      ))
-    )
+    .chain(textResponse('Hello World!'))
 ];
 
-const {server, streams, subscribers} = applySnakes(app);
+const {server} = applySnakes(app);
 server.listen(9000);
 ```
 
