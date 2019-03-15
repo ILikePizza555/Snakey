@@ -1,5 +1,5 @@
 import { ServerResponse } from "http";
-import { Observer } from "rxjs";
+import { Observer, OperatorFunction } from "rxjs";
 import { isString } from "util";
 import { map } from "rxjs/operators";
 import { Context } from "./index";
@@ -57,7 +57,9 @@ export class Responder {
  */
 export function textResponse(text: string);
 export function textResponse(text: string, status: number);
-export function textResponse(text: string, status: number = 200, encoding: string = "utf-8") {
+export function textResponse(text: string, 
+                             status: number = 200, 
+                             encoding: string = "utf-8"): OperatorFunction<Context, Responder> {
     return map((ctx: Context) => new Responder(ctx.response, {body: text, status: status, encoding: encoding}))
 }
 
