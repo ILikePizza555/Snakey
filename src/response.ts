@@ -53,14 +53,16 @@ export class Responder {
  * 
  * @param text The text that will be written to the client
  * @param status The HTTP status code.
- * @param encoding THe encoding of the string
+ * @param encoding The encoding of the string
  */
-export function textResponse(text: string);
-export function textResponse(text: string, status: number);
 export function textResponse(text: string, 
                              status: number = 200, 
                              encoding: string = "utf-8"): OperatorFunction<Context, Responder> {
     return map((ctx: Context) => new Responder(ctx.response, {body: text, status: status, encoding: encoding}))
+}
+
+export function jsonResponse(o: Object, status: number = 200): OperatorFunction<Context, Responder> {
+    return map((ctx: Context) => new Responder(ctx.response, {body: JSON.stringify(o), status: status}));
 }
 
 /**
