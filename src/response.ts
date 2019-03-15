@@ -1,21 +1,36 @@
 import { ServerResponse } from "http";
 import { Observer } from "rxjs";
 import { isString } from "util";
+import { map } from "rxjs/operators";
+import { Context } from "./index";
 
 export type HeaderMap = {[name: string]: string | number | string[]};
+export type ResponderParams = {
+    body?: string | {toString(): string},
+    status?: number,
+    headers?: HeaderMap,
+    encoding?: string,
+    endResponse?: boolean
+}
 
 /**
  * A Responder is an object that collects the information needed to construct a response
  * to the client, and provides a method which sends the response.
- * 
  */
 export class Responder {
+    readonly body: string | {toString(): string};
+    readonly status: number;
+    readonly headers: HeaderMap;
+    readonly encoding: string;
+    readonly endResponse;
+
     constructor(readonly resObj: ServerResponse,
-                readonly body: string | {toString(): string} = "",
-                readonly status: number = 200,
-                readonly headers: HeaderMap = {},
-                readonly encoding: string = "utf-8",
-                readonly endResponse = true) {
+                {body = "", status = 200, headers = {}, encoding = "utf-8", endResponse = true}: ResponderParams) {
+        this.body = body;
+        this.status = status;
+        this.headers = headers;
+        this.encoding = encoding;
+        this.endResponse = endResponse;
     }
 
     respond() {
