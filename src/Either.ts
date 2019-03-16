@@ -61,10 +61,10 @@ export class Right<E, A> {
     }
 }
 
-function isLeft<E, A>(e: Either<E, A>): e is Left<E, A> {
+export function isLeft<E, A>(e: Either<E, A>): e is Left<E, A> {
     return e.tag === "left";
 }
 
-function isRight<E, A>(e: Either<E, A>): e is Right<E, A> {
+export function isRight<E, A>(e: Either<E, A>): e is Right<E, A> {
     return e.tag === "right";
 }
