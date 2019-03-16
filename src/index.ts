@@ -1,35 +1,12 @@
 import {Observable, Observer, fromEvent, Subscription} from 'rxjs';
 import * as rxop from 'rxjs/operators';
 import {Server, IncomingMessage, ServerResponse} from 'http';
-import {matchRegex, matchPathPattern, PathMatch, PathPattern} from './match';
-import {parse, URIComponents} from 'uri-js';
+import {PathPattern} from './match';
+import {Context} from './Context';
 import { Snake } from './snake';
 import { Responder, ResponderObserver } from './response';
 
 export {snake, Snake} from './snake';
-
-export class Context {
-  readonly uri: URIComponents;
-
-  constructor(readonly request: IncomingMessage, 
-              readonly response: ServerResponse,
-              uri?: URIComponents,
-              readonly pathMatch: PathMatch | RegExpMatchArray | null = null) {
-    this.uri = uri || parse(request.url);
-  }
-
-  get method(): string {
-    return this.request.method;
-  }
-
-  match(pattern: PathPattern) {
-    if (typeof pattern === 'string') {
-      return new Context(this.request, this.response, this.uri, matchPathPattern(this.uri.path, pattern));
-    } else {
-      return new Context(this.request, this.response, this.uri, matchRegex(this.uri.path, pattern));
-    }
-  }
-}
 
 /**
  * Operator that filters HTTP requests by `verb` and `pathPattern`.
