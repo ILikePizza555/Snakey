@@ -1,5 +1,5 @@
 import { Observable, OperatorFunction, UnaryFunction } from "rxjs";
-import { Either, Right, Left } from "./Either";
+import { Either, Right, Left, isRight } from "./Either";
 
 /**
  * A Snake is a unique operator function which creates a disjoint stream. It is capable of composing itself with other
@@ -60,4 +60,23 @@ export function snake<I, E, R>(r: Observable<R>): Snake<I, E, R> {
  */
 export function errorSnake<I, E, R>(e: Observable<E>): Snake<I, E, R> {
     return liftSnake(() => new Left(e));
+}
+
+/**
+ * Takes two snakes and executes the first one. If a right value is returned, the value is returned.
+ * Otherwise, the value of the second snake is returned.
+ * @param s1 
+ * @param s2 
+ */
+export function concatSnake<I, E, R>(s1: Snake<I, E, R>, s2: Snake<I, E, R>): Snake<I, E, R> {
+    return liftSnake((i: Observable<I>) => {
+        const r1 = s1(i);
+
+        if(isRight(r1)) { return r1; }
+        else {return s2(i); }
+    });
+}
+
+export function concatAllSnakes<I, E, R>(snakes: Snake<I, E, R>[]): Snake<I, E, R> {
+    return snakes.reduce((prev, cur) => concatSnake(cur, prev))
 }
