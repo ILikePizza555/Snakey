@@ -9,6 +9,9 @@
  */
 export type Either<E, A> = Left<E, A> | Right<E, A>
 
+/**
+ * Internal interface to ensure that Left and Right have the same methods.
+ */
 interface EitherInterface<E, A> {
     readonly tag: "left" | "right";
     readonly value: E | A;
@@ -18,6 +21,8 @@ interface EitherInterface<E, A> {
      * @param f 
      */
     map<B>(f: (a: A) => B): Either<E, B>;
+
+    apply<B>(f: Either<E, (a: A) => B>): Either<E, B>;
 
     /**
      * Binds the given function across `Right`.
@@ -46,6 +51,11 @@ export class Left<E, A> implements EitherInterface<E, A> {
         return new Left<E, B>(this.value);
     }
 
+    apply<B>(f: Either<E, (a: A) => B>): Either<E, B> {
+        if(f.tag === "left") return new Left(f.value);
+        else return new Left(this.value);
+    }
+
     chain<B>(f: (a: A) => Either<E, B>): Either<E, B> {
         return new Left<E, B>(this.value);
     }
@@ -66,6 +76,11 @@ export class Right<E, A> implements EitherInterface<E, A> {
 
     map<B>(f: (a: A) => B): Right<E, B> {
         return new Right<E, B>(f(this.value));
+    }
+
+    apply<B>(f: Either<E, (a: A) => B>): Either<E, B> {
+        if(f.tag === "right") return this.map(f.value);
+        else return new Left(f.value);
     }
 
     chain<B>(f: (a: A) => Either<E, B>): Either<E, B> {
