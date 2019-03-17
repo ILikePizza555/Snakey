@@ -3,19 +3,22 @@
         "es6": true,
         "node": true
     },
-    "extends": ["eslint:recommended", "google"],
+    "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
     "plugins": [
+        "@typescript-eslint",
         "jsdoc"
     ],
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
     },
+    "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaVersion": 2018
     },
     "rules": {
         "brace-style" : ["error", "1tbs", {"allowSingleLine": true}],
-        "max-len": [1, { "code": 120 }]
+        "max-len": [1, { "code": 120 }],
+        "indent": ["error", 4]
     }
 }
