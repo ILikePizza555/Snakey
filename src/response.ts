@@ -2,7 +2,7 @@ import { ServerResponse } from "http";
 import { Observer, OperatorFunction } from "rxjs";
 import { isString } from "util";
 import { map } from "rxjs/operators";
-import { Context } from "./index";
+import { Context } from "./Context";
 
 export type HeaderMap = {[name: string]: string | number | string[]};
 export type ResponderParams = {
