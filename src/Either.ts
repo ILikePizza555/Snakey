@@ -9,25 +9,49 @@
  */
 export type Either<E, A> = Left<E, A> | Right<E, A>
 
-export class Left<E, A> {
-    readonly tag: "left" = "left";
-
-    constructor(public readonly value: E) {}
+interface EitherInterface<E, A> {
+    readonly tag: "left" | "right";
+    readonly value: E | A;
 
     /**
      * Maps the function across `Right`. If the value is actually `Left`, this does nothing.
      * @param f 
      */
-    map<B>(f: (a: A) => B): Either<E, B> {
-        return new Left<E, B>(this.value);
-    }
+    map<B>(f: (a: A) => B): Either<E, B>;
 
     /**
      * Binds the given function across `Right`.
      * @param f 
      */
+    chain<B>(f: (a: A) => Either<E, B>): Either<E, B>;
+
+    /**
+     * Maps the function across `Left`. If the value is actually `Right`, this does nothing
+     */
+    mapLeft<NE>(f: (a: E) => NE): Either<NE, A>;
+
+    /**
+     * Returns `value` is this is `Right`. Otherwise returns `a`.
+     * @param a 
+     */
+    getOrElse(a: A): A;
+}
+
+export class Left<E, A> implements EitherInterface<E, A> {
+    readonly tag: "left" = "left";
+
+    constructor(public readonly value: E) {}
+
+    map<B>(f: (a: A) => B): Either<E, B> {
+        return new Left<E, B>(this.value);
+    }
+
     chain<B>(f: (a: A) => Either<E, B>): Either<E, B> {
         return new Left<E, B>(this.value);
+    }
+
+    mapLeft<NE>(f: (a: E) => NE): Either<NE, A> {
+        return new Left(f(this.value));
     }
 
     getOrElse(a: A): A {
@@ -35,25 +59,21 @@ export class Left<E, A> {
     }
 }
 
-export class Right<E, A> {
+export class Right<E, A> implements EitherInterface<E, A> {
     readonly tag: "right" = "right";
 
     constructor(readonly value: A) {}
 
-    /**
-     * Maps the function across `Right`. If the value is actually `Left`, this does nothing.
-     * @param f 
-     */
     map<B>(f: (a: A) => B): Either<E, B> {
         return new Right<E, B>(f(this.value));
     }
 
-    /**
-     * Binds the given function across `Right`.
-     * @param f 
-     */
     chain<B>(f: (a: A) => Either<E, B>): Either<E, B> {
         return f(this.value);
+    }
+
+    mapLeft<NE>(f: (a: E) => NE): Either<NE, A> {
+        return new Right(this.value);
     }
 
     getOrElse(a: A): A {
