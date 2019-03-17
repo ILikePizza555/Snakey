@@ -12,7 +12,7 @@ export type Either<E, A> = Left<E, A> | Right<E, A>
 export class Left<E, A> {
     readonly tag: "left" = "left";
 
-    constructor(readonly value: E) {}
+    constructor(public readonly value: E) {}
 
     /**
      * Maps the function across `Right`. If the value is actually `Left`, this does nothing.
@@ -30,7 +30,7 @@ export class Left<E, A> {
         return new Left<E, B>(this.value);
     }
 
-    getOrElse(a: A) {
+    getOrElse(a: A): A {
         return a;
     }
 }
@@ -56,7 +56,7 @@ export class Right<E, A> {
         return f(this.value);
     }
 
-    getOrElse(a: A) {
+    getOrElse(a: A): A {
         return this.value;
     }
 }

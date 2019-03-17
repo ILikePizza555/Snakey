@@ -1,4 +1,4 @@
-import pathToRegexp = require('path-to-regexp');
+import pathToRegexp = require("path-to-regexp");
 
 export type PathPattern = string | RegExp;
 
@@ -12,7 +12,7 @@ export type PathPattern = string | RegExp;
  */
 export function matchRegex(pathname: string, regex: RegExp): RegExpMatchArray | null {
     if (!(regex instanceof RegExp)) {
-        throw new TypeError('regex should be a Regex object.');
+        throw new TypeError("regex should be a Regex object.");
     }
 
     return pathname.match(regex);
@@ -54,10 +54,10 @@ export function matchPathPattern(pathname: string, pattern: string): PathMatch |
 
     return {
         path: pathname,
-        fullMatch: execResult.shift().replace(/^\/+|\/+$/g, ''),
+        fullMatch: execResult.shift().replace(/^\/+|\/+$/g, ""),
         params: keys
-            .map((v, i) => ({ ...v, 'group': execResult[i] }))
-            .map((v) => v.group ? { ...v, 'paramValue': v.group.split(v.delimiter) } : v)
+            .map((v, i) => ({ ...v, "group": execResult[i] }))
+            .map((v) => v.group ? { ...v, "paramValue": v.group.split(v.delimiter) } : v)
             .reduce((acc, cur) => {
                 if (cur.paramValue && !cur.repeat && cur.paramValue.length == 1) {
                     acc[cur.name] = cur.paramValue[0];

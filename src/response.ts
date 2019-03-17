@@ -4,13 +4,13 @@ import { isString } from "util";
 import { map } from "rxjs/operators";
 import { Context } from "./Context";
 
-export type HeaderMap = {[name: string]: string | number | string[]};
-export type ResponderParams = {
-    body?: string | {toString(): string},
-    status?: number,
-    headers?: HeaderMap,
-    encoding?: string,
-    endResponse?: boolean
+export interface HeaderMap {[name: string]: string | number | string[]}
+export interface ResponderParams {
+    body?: string | {toString(): string};
+    status?: number;
+    headers?: HeaderMap;
+    encoding?: string;
+    endResponse?: boolean;
 }
 
 /**
@@ -25,7 +25,7 @@ export class Responder {
     readonly endResponse;
 
     constructor(readonly resObj: ServerResponse,
-                {body = "", status = 200, headers = {}, encoding = "utf-8", endResponse = true}: ResponderParams) {
+        {body = "", status = 200, headers = {}, encoding = "utf-8", endResponse = true}: ResponderParams) {
         this.body = body;
         this.status = status;
         this.headers = headers;
@@ -33,7 +33,7 @@ export class Responder {
         this.endResponse = endResponse;
     }
 
-    respond() {
+    respond(): void {
         this.resObj.writeHead(this.status, this.headers);
 
         const chunk: string = (isString(this.body)) ? this.body : this.body.toString();
@@ -56,8 +56,8 @@ export class Responder {
  * @param encoding The encoding of the string
  */
 export function textResponse(text: string, 
-                             status: number = 200, 
-                             encoding: string = "utf-8"): OperatorFunction<Context, Responder> {
+    status: number = 200, 
+    encoding: string = "utf-8"): OperatorFunction<Context, Responder> {
     return map((ctx: Context) => new Responder(ctx.response, {body: text, status: status, encoding: encoding}))
 }
 
@@ -69,7 +69,7 @@ export function textResponse(text: string,
  * @param o 
  * @param status 
  */
-export function jsonResponse(o: Object, status: number = 200): OperatorFunction<Context, Responder> {
+export function jsonResponse(o: Record<string, any>, status: number = 200): OperatorFunction<Context, Responder> {
     return map((ctx: Context) => 
         new Responder(ctx.response, {
             body: JSON.stringify(o), 

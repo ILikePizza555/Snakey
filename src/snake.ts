@@ -11,7 +11,7 @@ import { Either, Right, Left, isRight } from "./Either";
  * ... This is just a Functor, isn't it?
  */
 export interface Snake<T, R> extends OperatorFunction<T, R> {
-    chain<N>(op: OperatorFunction<R, N>) : Snake<T, N>
+    chain<N>(op: OperatorFunction<R, N>): Snake<T, N>;
 }
 
 function compose<A, B, C>(f1: UnaryFunction<A, B>, f2: UnaryFunction<B, C>): UnaryFunction<A, C> {
