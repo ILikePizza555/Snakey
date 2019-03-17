@@ -50,7 +50,7 @@ export class Left<E, A> implements EitherInterface<E, A> {
         return new Left<E, B>(this.value);
     }
 
-    mapLeft<NE>(f: (a: E) => NE): Either<NE, A> {
+    mapLeft<NE>(f: (a: E) => NE): Left<NE, A> {
         return new Left(f(this.value));
     }
 
@@ -64,7 +64,7 @@ export class Right<E, A> implements EitherInterface<E, A> {
 
     constructor(readonly value: A) {}
 
-    map<B>(f: (a: A) => B): Either<E, B> {
+    map<B>(f: (a: A) => B): Right<E, B> {
         return new Right<E, B>(f(this.value));
     }
 
@@ -87,4 +87,14 @@ export function isLeft<E, A>(e: Either<E, A>): e is Left<E, A> {
 
 export function isRight<E, A>(e: Either<E, A>): e is Right<E, A> {
     return e.tag === "right";
+}
+
+/**
+ * If the value of e1 is `Right`, then e1 is returned. Otherwise, e2 is returned.
+ * @param e1 
+ * @param e2 
+ */
+export function concat<E, A>(e1: Either<E, A>, e2: Either<E, A>): Either<E, A> {
+    if(isRight(e1)) return e1;
+    else return e2;
 }
