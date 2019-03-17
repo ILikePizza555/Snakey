@@ -74,7 +74,7 @@ export class Right<E, A> implements EitherInterface<E, A> {
 
     constructor(readonly value: A) {}
 
-    map<B>(f: (a: A) => B): Right<E, B> {
+    map<B>(f: (a: A) => B): Either<E, B> {
         return new Right<E, B>(f(this.value));
     }
 
