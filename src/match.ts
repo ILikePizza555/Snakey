@@ -11,11 +11,11 @@ export type PathPattern = string | RegExp;
  * @return {RegExpMatchArray?}
  */
 export function matchRegex(pathname: string, regex: RegExp): RegExpMatchArray | null {
-  if (!(regex instanceof RegExp)) {
-    throw new TypeError('regex should be a Regex object.');
-  }
+    if (!(regex instanceof RegExp)) {
+        throw new TypeError('regex should be a Regex object.');
+    }
 
-  return pathname.match(regex);
+    return pathname.match(regex);
 }
 
 /**
@@ -31,9 +31,9 @@ export function matchRegex(pathname: string, regex: RegExp): RegExpMatchArray | 
  * @property {Object} params - A map of parameter names to the values.
  */
 export interface PathMatch {
-  path: string;
-  fullMatch: string;
-  params: Map<string, string[] | string | undefined>;
+    path: string;
+    fullMatch: string;
+    params: Map<string, string[] | string | undefined>;
 }
 
 /**
@@ -43,27 +43,28 @@ export interface PathMatch {
    * @param {string} pattern
    * @return {PathMatch?}
    */
-export function matchPathPattern(pathname: string, pattern: string) : PathMatch | null {
-  const keys = [];
-  const regex = pathToRegexp(pattern, keys);
-  const execResult = regex.exec(pathname);
+export function matchPathPattern(pathname: string, pattern: string): PathMatch | null {
+    const keys = [];
+    const regex = pathToRegexp(pattern, keys);
+    const execResult = regex.exec(pathname);
 
-  if (execResult === null) {
-    return null;
-  }
+    if (execResult === null) {
+        return null;
+    }
 
-  return {
-    path: pathname,
-    fullMatch: execResult.shift().replace(/^\/+|\/+$/g, ''),
-    params: keys
-        .map((v, i) => ({...v, 'group': execResult[i]}))
-        .map((v) => v.group ? {...v, 'paramValue': v.group.split(v.delimiter)} : v)
-        .reduce((acc, cur) => {
-          if (cur.paramValue && !cur.repeat && cur.paramValue.length == 1) {
-            acc[cur.name] = cur.paramValue[0];
-          } else {
-            acc[cur.name] = cur.paramValue;
-          }
-          return acc;
-        }, {})};
+    return {
+        path: pathname,
+        fullMatch: execResult.shift().replace(/^\/+|\/+$/g, ''),
+        params: keys
+            .map((v, i) => ({ ...v, 'group': execResult[i] }))
+            .map((v) => v.group ? { ...v, 'paramValue': v.group.split(v.delimiter) } : v)
+            .reduce((acc, cur) => {
+                if (cur.paramValue && !cur.repeat && cur.paramValue.length == 1) {
+                    acc[cur.name] = cur.paramValue[0];
+                } else {
+                    acc[cur.name] = cur.paramValue;
+                }
+                return acc;
+            }, {})
+    };
 }
